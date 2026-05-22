@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:15
     container_name: fastapi_db
-    env_file: .env   # Додайте це
+    env_file: .env 
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -16,7 +16,7 @@ services:
   web:
     build: .
     container_name: fastapi_app
-    env_file: .env   # І це теж обов'язково
+    env_file: .env  
     volumes:
       - .:/code
     ports:
