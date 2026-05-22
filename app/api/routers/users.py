@@ -4,8 +4,9 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 
 from app.database import get_db
-from app.models import User, Profile
-from app.schemas.users import UserCreate, UserResponse, ProfileCreate, ProfileResponse
+from app.models import User
+from app.schemas.users import UserCreate, UserResponse
+from app.core.security import get_password_hash 
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -15,17 +16,18 @@ async def create_user(user_data: UserCreate, db: AsyncSession = Depends(get_db))
     if result.scalars().first():
         raise HTTPException(status_code=400, detail="Email already registered")
     
+    hashed_pwd = get_password_hash(user_data.password)
+    
     db_user = User(
         username=user_data.username,
         email=user_data.email,
-        hashed_password=user_data.password + "fakehash"
+        hashed_password=hashed_pwd
     )
+    
     db.add(db_user)
     await db.commit()
-    # Після commit та refresh знову робимо запит з завантаженням профілю
     await db.refresh(db_user)
     
-    # Повторний запит для правильного завантаження зв'язків через selectinload
     result = await db.execute(
         select(User).options(selectinload(User.profile)).where(User.id == db_user.id)
     )

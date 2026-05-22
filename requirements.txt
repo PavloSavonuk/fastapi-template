@@ -5,3 +5,4 @@ psycopg2-binary
 pydantic[email]
 email-validator
 python-multipart
+bcrypt==4.0.1

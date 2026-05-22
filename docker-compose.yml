@@ -1,7 +1,9 @@
+
 services:
   db:
     image: postgres:15
     container_name: fastapi_db
+    env_file: .env   # Додайте це
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -14,12 +16,12 @@ services:
   web:
     build: .
     container_name: fastapi_app
+    env_file: .env   # І це теж обов'язково
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     environment:
-      # Тут ми використовуємо змінні, які підставляться з вашого .env
       - DATABASE_URL=${DATABASE_URL}
       - PYTHONPATH=/code
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

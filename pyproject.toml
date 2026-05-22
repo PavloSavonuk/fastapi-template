@@ -1,22 +1,24 @@
 [project]
 name = "fastapi-template"
 version = "0.1.0"
-description = ""
+description = "FastAPI project template"
 authors = [
     {name = "pashaboy"}
 ]
 requires-python = ">=3.13"
+
 dependencies = [
-    "fastapi (>=0.136.0,<0.137.0)",
-    "uvicorn (>=0.44.0,<0.45.0)",
-    "email-validator (>=2.0.0)",
-    "sqlalchemy (>=2.0.30)",
-    "asyncpg (>=0.29.0)",
-    "alembic (>=1.13.0)",
-    "pydantic-settings (>=2.2.0)"
+    "fastapi>=0.115.0",
+    "uvicorn>=0.30.0",
+    "email-validator>=2.0.0",
+    "sqlalchemy>=2.0.30",
+    "asyncpg>=0.29.0",
+    "alembic>=1.13.0",
+    "pydantic-settings>=2.2.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-jose[cryptography]>=3.3.0"
 ]
 
-[tool.poetry]
-name = "fastapi-template"
-version = "0.1.0"
-package-mode = false
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
