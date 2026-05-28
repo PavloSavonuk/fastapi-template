@@ -1,0 +1,5 @@
+Лабораторна робота №2
+
+1. Команда для збірки та запуску: docker compose up --build
+2. Перевірка контейнерів: docker ps
+3. Перевірка залежностей у контейнері: docker exec -it fastapi_app poetry show

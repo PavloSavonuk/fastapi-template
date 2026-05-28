@@ -1,15 +1,21 @@
+# Використовуємо офіційний образ Python
 FROM python:3.13-slim
 
+# Встановлюємо poetry
+RUN pip install poetry
+
+# Встановлюємо робочу директорію
 WORKDIR /code
 
-# 1. Копіюємо файл залежностей
-COPY pyproject.toml /code/
+# Копіюємо лише файли конфігурації для встановлення залежностей
+COPY pyproject.toml poetry.lock* /code/
 
-# 2. Встановлюємо залежності з pyproject.toml
-# Ми використовуємо крапку (.), щоб pip встановив все, що описано у файлі
-RUN pip install --no-cache-dir .
+# Налаштовуємо poetry: створювати середовище не в окремій папці, 
+# а прямо в системі контейнера (це краще для Docker)
+RUN poetry config virtualenvs.create false && poetry install --no-root
 
-# 3. Копіюємо решту коду
-COPY . /code
+# Копіюємо весь інший код
+COPY . /code/
 
+# Команда для запуску з автоперезавантаженням
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -14,6 +14,7 @@ import sys
 import os
 sys.path.append(os.getcwd()) # Додаємо поточну директорію в шлях
 
+# Переконайтеся, що всі моделі імпортовані для коректної роботи autogenerate
 from app.models import User, Profile, Category, Product, Order
 
 config = context.config
@@ -24,7 +25,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
-    url = settings.get_db_url
+    url = settings.DATABASE_URL
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -43,7 +44,8 @@ def do_run_migrations(connection):
 
 async def run_migrations_online() -> None:
     configuration = config.get_section(config.config_ini_section) or {}
-    configuration["sqlalchemy.url"] = settings.get_db_url
+    # ВИПРАВЛЕНО: замінено get_db_url на DATABASE_URL
+    configuration["sqlalchemy.url"] = settings.DATABASE_URL
 
     connectable = async_engine_from_config(
         configuration,
